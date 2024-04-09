@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Chat app</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <h1>{{groupname}}</h1>
+        <textarea id="chat-log" cols="100" rows="20">
+            {% for chat in chats  %}
+            {{chat.cotent}}
+            {% endfor %}
+            
+
+        </textarea><br>
+        <input type="text" id="chat-message-input" size="100"><br>
+        <input type="button" value="Send" id="chat-message-submit">
+        {{groupname|json_script:"group-name"}}
+        <script>
+            const groupName=JSON.parse(document.getElementById('group-name').textContent)
+            console.log(groupName)
+            var ws= new WebSocket('ws://127.0.0.1:8000/ws/sc/'+groupName)
+            ws.onopen = function () {
+                console.log('Websocket connection open...')
+                
+            }
+            ws.onmessage = function (event) {
+                console.log('Message Received from Server...', event.data)
+                console.log('Type of Message Received from Server...', typeof (event.data))
+                const data = JSON.parse(event.data)
+                document.querySelector('#chat-log').value += (data.user + ':'+ data.msg + '\n')
+            }
+            document.getElementById('chat-message-submit').onclick = function (event) {
+                const messageInputDom = document.getElementById('chat-message-input')
+                const message = messageInputDom.value
+                ws.send(JSON.stringify({      // Object to String
+                  'msg': message
+                }))
+                messageInputDom.value = ''
+            }
+          
+        </script>
+    </body>
+</html>

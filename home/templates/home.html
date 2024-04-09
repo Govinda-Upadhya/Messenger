@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #444;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Messenger</h1>
+    </header>
+
+    <nav>
+        
+        {% if user is not None %}
+            
+            <a href="{% url "friendo" %}">Friends</a>
+            <a href="">Dashoboard</a>
+            <a href="{% url "custom_logout" %}" onclick="logout()">Logout</a>
+        
+        {% else %}  
+       
+        <a href={% url "signup" %}>Signup</a>
+        <a href={% url "login" %}>Login</a>
+            
+        {% endif %}
+        
+        
+        
+    </nav>
+
+    <section>
+        <h2>Welcome to Our Messenger App</h2>
+        <p>This is the home page content. You can add more sections and content as needed.</p>
+    </section>
+
+    <footer>
+        &copy; 2024 Your Website. All rights reserved.
+    </footer>
+    <script>
+        function logout() {
+            // Perform logout
+            // Optionally, clear any stored user data in local storage or cookies
+        
+            // Force reload of the page
+            location.reload(true);
+        }
+        </script>
+
+</body>
+</html>

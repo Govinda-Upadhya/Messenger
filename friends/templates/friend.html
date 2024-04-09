@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    <style>
+        /* CSS for header */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* CSS for navigation bar */
+        nav {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0 10px;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        /* CSS for search container */
+        .search-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* CSS for footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* CSS for table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .send-request-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Website</h1>
+    </header>
+
+    <!-- Navigation bar -->
+    <nav>
+        <a href="{% url "Home" %}">Home</a>
+        <a href="{% url 'viewrequest' %}">Friend Requests</a>
+    </nav>
+
+    <div class="search-container">
+        <form action="{% url "friendo" %}" method="get">
+            <input type="text" name="target" placeholder="Search...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    
+        <p></p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for friend in friends  %}
+            <tr>
+                <td>{{friend.friend.username}}</td>
+                <td><a href='{% url "message" friend.friend.username %}'><button class="send-request-button">Messages</button></a></td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+
+    <!-- Table -->
+    {% if target is not None %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{target.username}}</td>
+                <td><form action="{% url "friendo" %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="target_username" value="{{ target.username }}">
+                    <button class="send-request-button" type="submit">Send Request</button>
+                </form></td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2024 My Website. All rights reserved.</p>
+    </footer>
+</body>
+</html>
